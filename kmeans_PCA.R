@@ -1,4 +1,4 @@
-library("readxl") #Reds excelfiles
+library("readxl") #Reads excel-files
 library(dplyr) #Data manipulation
 library(tibble) #Data frame manipulation
 library(ggplot2) #Data visualization
@@ -26,7 +26,7 @@ split_gene_symbols<- function(row.num){
     })
 }
 
-#add all genes from all rows to a list
+#Adds all genes from all rows to a list
 ccpdac.genes<-t(data.frame(lapply(c(1:length(ccpdac$Gene)), split_gene_symbols)))
 
 row.names(ccpdac.genes)= c(1:dim(ccpdac.genes)[1])
@@ -34,14 +34,13 @@ row.names(ccpdac.genes)= c(1:dim(ccpdac.genes)[1])
 #Reading the Gene list-annotated data
 geneset <-read_excel("./20210420_144_Gene_PDACMarvel_KD.xlsx")
 
-#matching the genes from the dataset with the geneset
+#Matching the genes from the dataset with the geneset
 genes<-as.character(as.matrix(geneset)[,1])
 id <- as.character(ccpdac.genes[,1])
 mat<- match (genes, id)
 dim(mat)
 
 colsum <- (colSums(ccpdac[,-1]))
-
 
 expr<- ccpdac[na.omit(ccpdac.genes[mat, 2]), ]
 write.csv(expr, "exprwithgenes.csv", row.names= TRUE)
@@ -51,7 +50,7 @@ expr_rm <- expr[,-1]
 write.csv(expr_rm, "exprdat.csv", row.names= TRUE)
 
 
-#-----------------------------------K_Means Clustering----------------------------
+#-----------------------------------K_Means Clustering-----------------------------------
 
 
 expr_dat <- t(expr_rm)
@@ -99,7 +98,7 @@ write.table(cluster.info,paste0( date_today, "_ccpdac_filtered_k-means_cluster_i
             sep = "\t", row.names = FALSE)
 
 
-#Calculating Principal Components
+#calculating Principal Components
 pca.data <- prcomp(expr_dat, center = TRUE, scale. = TRUE)
 
 #matching sample IDs from PCA and cluster info
@@ -112,12 +111,13 @@ colnames(pca_data)[3] <- "cluster"
 
 pca_data[,3] <- as.factor(pca_data[,3])
 
-
 #plotting silhouette plot and PCA plot with batches and kmeans information for opt.k
 plotFile = paste0(date_today, "_ccpdac_filtered_pca_k-means.pdf")
 
 print(paste0("Plotting Silhouette Plot and Principal Component Analysis biplot (with batches and clustering information) to the file ", plotFile))
 pdf (plotFile)
+
+
 
 #silhouette plot
 silh.plot <- ggplot2::ggplot(data = silh, ggplot2::aes(x =k, y =silWidth)) +
@@ -133,7 +133,9 @@ silh.plot <- ggplot2::ggplot(data = silh, ggplot2::aes(x =k, y =silWidth)) +
 
 plot(silh.plot)
 
-#PCA with batch and kmeans info plot
+
+
+#PCA (with batch) and kmeans info plot
 kmeans_pca_plot <- ggplot2::ggplot(data = pca_data) +
   
     ggplot2::geom_point(ggplot2::aes(x=PC1,
