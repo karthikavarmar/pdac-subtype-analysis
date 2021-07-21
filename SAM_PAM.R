@@ -1,8 +1,10 @@
-#----------------------------------------------SAM Analysis-----------------------------------------------
+#--------------------------------------------SAM Analysis---------------------------------------
+
+
 install.packages("siggenes")
 library(siggenes)
 library(multtest)
-#install.packages("pamr")
+install.packages("pamr")
 library(pamr)
 
 #expr_rm <- apply(expr_rm, 1, median)
@@ -34,7 +36,7 @@ sam.sum@row.sig.genes
 sigf<- sam.sum2@mat.sig
 capture.output(sigf, file = "siggenes_sam.txt")
 
-#----------------------------------------PAM analysis--------------------------------------------------
+#-------------------------------PAM analysis-------------------------------------------------
   
 m0 = match(names(summary(sam.out,32.8,entrez=FALSE)@row.sig.genes),rownames(expr_rm))
 w0 = which(!is.na(m0)) 
@@ -42,7 +44,6 @@ tD = expr_rm[m0[w0],]
 #dim(tD)
 
 Ypcen<-tD 
-#dim(Ypcen)
 set.seed(123)
 
 data = list(x=as.matrix(Ypcen), y=ccpdac.cl, geneid = rownames(Ypcen), genenames = rownames(Ypcen))
