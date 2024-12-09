@@ -6,7 +6,7 @@ library(readr) #CSV file I/O, e.g. the read_csv function
 
 #Reading PDAC samples 
 print("Reading GExp PDAC data :")
-ccpdac <- read.delim('C:/Users/Karthika/Documents/Anguraj/01Clustering/Sample/2019-04-05_2019-04-05_92_COMBAT_corrected_rnaseq_PDAC_4_batches_counts_TMM_CPM_log2_ENS_ID_removed_80_55968_with_gene_name_data_sd0.txt', stringsAsFactors = FALSE)
+ccpdac <- read.delim('C:/Users/Karthika/Documents/.../01Clustering/Sample/2019-04-05_2019-04-05_92_COMBAT_corrected_rnaseq_PDAC_4_batches_counts_TMM_CPM_log2_ENS_ID_removed_80_55968_with_gene_name_data_sd0.txt', stringsAsFactors = FALSE)
 #grepl(" /// ", ccpdac$Gene)
 
 ccpdac.genes<-data.frame(Gene='', row='', check.names = FALSE)
@@ -56,7 +56,7 @@ write.csv(expr_rm, "exprdat.csv", row.names= TRUE)
 expr_dat <- t(expr_rm)
 write.csv(expr_dat, "exprdat.csv", row.names= TRUE)
 
-setwd("C:/Users/Karthika/Documents/Anguraj/01Clustering/Sample/PDAC_actual")
+setwd("C:/Users/Karthika/Documents/.../01Clustering/Sample/PDAC_actual")
 
 #calculating distance matrix
 distMatrix <- dist(expr_dat, method = "euclidean")
